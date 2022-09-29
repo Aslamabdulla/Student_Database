@@ -50,7 +50,7 @@ class StudentDbController extends GetxController {
   }
 
   Future<void> updateStudent(StudentModel editedStudent, int index) async {
-    await studentDb.put(controller.studentList[index], editedStudent);
+    await studentDb.put(controller.studentList[index].id, editedStudent);
     studentList.removeAt(index);
     studentList.insert(index, editedStudent);
     update();

@@ -1,12 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/core/constants/constants.dart';
+import 'package:flutter_application_4/widgets/icon_button/icon_button.dart';
+import 'package:get/get.dart';
+
 import 'package:flutter_application_4/controllers/student_controller.dart';
 import 'package:flutter_application_4/core/colors/colors.dart';
 import 'package:flutter_application_4/functions/db_functions.dart';
-
+import 'package:flutter_application_4/model/data_model.dart';
 import 'package:flutter_application_4/view/editscreen.dart';
 import 'package:flutter_application_4/view/studentdetails.dart';
 import 'package:flutter_application_4/widgets/common_widgets.dart';
-import 'package:get/get.dart';
 
 List StudentImages = [
   'assets/images/studentimage/1 (1).jpeg',
@@ -62,7 +68,7 @@ class ListenStudentWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 10, left: 40, right: 40),
                 child: Center(
                   child: Text(
-                    "STUDENT DETAILS",
+                    "ALL STUDENTS",
                     style: textStyleHead(),
                   ),
                 ),
@@ -70,6 +76,7 @@ class ListenStudentWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   height: 680,
                   width: 380,
                   decoration: boxDecorationContainerTwo(),
@@ -83,23 +90,18 @@ class ListenStudentWidget extends StatelessWidget {
                                 return Card(
                                   elevation: 5,
                                   child: ListTile(
-                                    onLongPress: () {
-                                      Get.to(EditingScreen(
-                                        namelist: data.name,
-                                        agelist: data.age,
-                                        genderlist: data.gender,
-                                        classlist: data.standard,
-                                        listkey: data.key,
-                                        imagelist: StudentImages[index],
-                                      ));
-                                    },
+                                    onLongPress: () {},
                                     leading: CircleAvatar(
-                                      radius: 30,
-                                      child: Image(
-                                        image: AssetImage(StudentImages[index]),
-                                      ),
-                                      backgroundColor: Colors.white,
-                                    ),
+                                        radius: 40,
+                                        backgroundImage: studentList
+                                                    .studentList[index].image
+                                                    .toString() !=
+                                                'assets/images/usericon.jpg'
+                                            ? FileImage(File(
+                                                studentList
+                                                    .studentList[index].image,
+                                              )) as ImageProvider
+                                            : kAssetImageUrl),
                                     subtitle: Text("Age: ${data.age}"),
                                     title: Text(
                                         "Name: ${studentList.studentList[index].name.toUpperCase()}"),
@@ -108,37 +110,14 @@ class ListenStudentWidget extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            Get.defaultDialog(
-                                              title: 'Confirm Delete',
-                                              titleStyle: TextStyle(
-                                                  fontSize: 25,
-                                                  color: kBlackColor),
-                                              middleText:
-                                                  'Please Confirm Deletion',
-                                              middleTextStyle: TextStyle(
-                                                  fontSize: 25,
-                                                  color: kBlackColor),
-                                              textConfirm: 'YES',
-                                              textCancel: 'NO',
-                                              cancelTextColor: kBlackColor,
-                                              confirmTextColor: kBlackColor,
-                                              onConfirm: () {
-                                                if (data.key != null) {
-                                                  studentList.deleteStudent(
-                                                      studentList
-                                                          .studentList[index]
-                                                          .id!,
-                                                      index);
-                                                  Get.back();
-                                                  // print('deleted');
-                                                } else {
-                                                  //   print('Student is null');
-                                                }
-                                              },
-                                              onCancel: () {
-                                                Get.back();
-                                              },
-                                            );
+                                            Get.to(EditingScreen(
+                                              namelist: data.name,
+                                              agelist: data.age,
+                                              genderlist: data.gender,
+                                              classlist: data.standard,
+                                              index: index,
+                                              imagelist: data.image,
+                                            ));
                                           },
                                           icon: Icon(Icons.edit),
                                           color: Colors.black,
@@ -146,19 +125,20 @@ class ListenStudentWidget extends StatelessWidget {
                                         IconButton(
                                           onPressed: () {
                                             Get.defaultDialog(
-                                              title: 'Confirm Delete',
+                                              buttonColor: kBlackColor,
+                                              title: 'DELETE',
                                               titleStyle: TextStyle(
                                                   fontSize: 25,
                                                   color: kBlackColor),
                                               middleText:
-                                                  'Please Confirm Deletion',
+                                                  ' Please Confirm Deletion ',
                                               middleTextStyle: TextStyle(
                                                   fontSize: 25,
                                                   color: kBlackColor),
                                               textConfirm: 'YES',
                                               textCancel: 'NO',
                                               cancelTextColor: kBlackColor,
-                                              confirmTextColor: kBlackColor,
+                                              confirmTextColor: kWhiteColor,
                                               onConfirm: () {
                                                 if (data.key != null) {
                                                   studentList.deleteStudent(
@@ -188,7 +168,8 @@ class ListenStudentWidget extends StatelessWidget {
                                         age: data.age,
                                         gender: data.gender,
                                         standard: data.standard,
-                                        imagestudent: StudentImages[index],
+                                        imagestudent: studentList
+                                            .studentList[index].image,
                                       ));
                                     },
                                   ),

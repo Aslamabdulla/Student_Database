@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/core/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 commonLightPurple() {
@@ -63,8 +64,9 @@ boxDecorationShadow() {
 
 boxDecorationContainerTwo() {
   return BoxDecoration(
+      gradient: kGradient,
       shape: BoxShape.rectangle,
-      color: const Color.fromRGBO(205, 180, 219, 1),
+      // color: const Color.fromRGBO(205, 180, 219, 1),
       borderRadius: BorderRadius.circular(10.0),
       boxShadow: [
         BoxShadow(
@@ -92,7 +94,8 @@ buttonShape() {
 buttonStyle() {
   return ButtonStyle(
       foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-      backgroundColor: MaterialStateProperty.all<Color>(Colors.deepPurple),
+      backgroundColor:
+          MaterialStateProperty.all<Color>(Color.fromRGBO(49, 41, 62, .5)),
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18.0),
@@ -102,7 +105,7 @@ buttonStyle() {
 textStyleHead() {
   return GoogleFonts.aclonica(
     textStyle: TextStyle(
-      color: Colors.deepPurple,
+      color: Color.fromRGBO(41, 139, 168, 1),
       fontWeight: FontWeight.w700,
       fontSize: 20,
     ),

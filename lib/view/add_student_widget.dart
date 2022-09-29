@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/core/constants/constants.dart';
+import 'package:flutter_application_4/view/bottom_sheet/image_bottomsheet.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_application_4/controllers/student_controller.dart';
@@ -26,151 +29,207 @@ class AddStudentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: SafeArea(
         child: SingleChildScrollView(
-          child: GetBuilder<StudentDbController>(
-              init: StudentDbController(),
-              builder: (StudentDbController studentData) {
-                return Container(
-                  height: 600,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: const Color.fromRGBO(205, 180, 219, 1),
-                      borderRadius: BorderRadius.circular(160.0),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 5,
-                        )
-                      ]),
-                  child: Form(
-                    key: _formKey,
-                    child: ListView(
-                      children: [
-                        Container(
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 15.0),
-                            child: Image(
-                              image: AssetImage(
-                                  'assets/images/casual-life-3d-boy-carrying-books.png'),
-                              height: 150,
+          child: Center(
+            child: SingleChildScrollView(
+              child: GetBuilder<StudentDbController>(
+                  init: StudentDbController(),
+                  builder: (StudentDbController studentData) {
+                    return Container(
+                      margin: EdgeInsets.only(top: 20),
+                      height: 700,
+                      width: 350,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.white.withOpacity(.5),
+                                Color.fromRGBO(39, 90, 107, .6),
+                                Color.fromRGBO(41, 139, 168, .5)
+                              ],
+                              stops: [
+                                0,
+                                0.35,
+                                1
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter),
+                          shape: BoxShape.rectangle,
+                          color: const Color.fromRGBO(84, 57, 96, 1),
+                          borderRadius: BorderRadius.circular(160.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 1,
+                            )
+                          ]),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            kHeight10,
+                            Container(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 15.0),
+                                child: Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    CircleAvatar(
+                                        radius: 80,
+                                        backgroundImage: studentData
+                                                    .studentImageFile !=
+                                                null
+                                            ? FileImage(File(
+                                                studentData.studentImageFile!,
+                                              )) as ImageProvider
+                                            : AssetImage(
+                                                "assets/images/usericon.jpg")),
+                                    Positioned(
+                                        left: 100,
+                                        right: 0,
+                                        bottom: 10,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Get.bottomSheet(
+                                              ImageSelectSheet(),
+                                              backgroundColor: kWhiteColor,
+                                              isDismissible: true,
+                                            );
+                                          },
+                                          child: CircleAvatar(
+                                            child: Icon(Icons.add_a_photo),
+                                            backgroundColor: kWhiteColor,
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: TextFormField(
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              hintText: 'Name',
-                              fillColor: Colors.white,
-                              filled: true,
-                              prefixIcon: const Icon(Icons.person_add),
+                            kHeight15,
+                            Text("ADD PHOTO"),
+                            kHeight15,
+                            Padding(
+                              padding: padding25,
+                              child: TextFormField(
+                                controller: _nameController,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
+                                  hintText: 'Name',
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  prefixIcon: const Icon(Icons.person_add),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Empty Fields";
+                                  }
+                                },
+                              ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Empty Fields";
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _ageController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              hintText: 'Age',
-                              fillColor: Colors.white,
-                              filled: true,
-                              prefixIcon: const Icon(Icons.badge),
+                            kHeight15,
+                            Padding(
+                              padding: padding25,
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                controller: _ageController,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
+                                  hintText: 'Age',
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  prefixIcon: const Icon(Icons.badge),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Empty Fields";
+                                  }
+                                },
+                              ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Empty Fields";
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: TextFormField(
-                            controller: _genderController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              hintText: 'Gender',
-                              fillColor: Colors.white,
-                              filled: true,
-                              prefixIcon: const Icon(Icons.wc),
+                            kHeight15,
+                            Padding(
+                              padding: padding25,
+                              child: TextFormField(
+                                controller: _genderController,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
+                                  hintText: 'Gender',
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  prefixIcon: const Icon(Icons.wc),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Empty Fields";
+                                  }
+                                },
+                              ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Empty Fields";
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: TextFormField(
-                            controller: _classController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              hintText: 'Class',
-                              fillColor: Colors.white,
-                              filled: true,
-                              prefixIcon: const Icon(Icons.school),
+                            kHeight15,
+                            Padding(
+                              padding: padding25,
+                              child: TextFormField(
+                                controller: _classController,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
+                                  hintText: 'Class',
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  prefixIcon: const Icon(Icons.school),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Empty Fields";
+                                  }
+                                },
+                              ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Empty Fields";
-                              }
-                            },
-                          ),
+                            kHeight15,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 90, right: 90),
+                              child: ElevatedButton.icon(
+                                  style: buttonStyle(),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      onAddStudentButtonClicked();
+                                    }
+                                  },
+                                  icon: const Icon(Icons.add),
+                                  label: const Text(
+                                    "Add Student",
+                                    style: TextStyle(fontSize: 16),
+                                  )),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 90, right: 90),
-                          child: ElevatedButton.icon(
-                              style: buttonStyle(),
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  onAddStudentButtonClicked();
-                                }
-                              },
-                              icon: const Icon(Icons.add),
-                              label: const Text("Add Student")),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+                      ),
+                    );
+                  }),
+            ),
+          ),
         ),
       ),
     );
   }
 
   Future<void> onAddStudentButtonClicked() async {
+    final String image;
+    if (controller.studentImageFile == null) {
+      image = 'assets/images/usericon.jpg';
+    } else {
+      image = controller.studentImageFile!;
+    }
+
     final _name = _nameController.text.trim();
     final _age = _ageController.text.trim();
     final _gender = _genderController.text.trim();
@@ -184,7 +243,7 @@ class AddStudentWidget extends StatelessWidget {
       age: _age,
       gender: _gender,
       standard: _class,
-      image: "",
+      image: image,
     );
     controller.addStudent(_student);
     log(_student.name.toString());
@@ -198,7 +257,13 @@ class AddStudentWidget extends StatelessWidget {
         "",
         "",
         snackPosition: SnackPosition.TOP);
+    controller.studentImageFile = null;
+    _nameController.clear();
+    _ageController.clear();
+    _genderController.clear();
+    _classController.clear();
   }
+
   //   void checkLogin(BuildContext ctx) async {
   //   final _namefield = _nameController.text;
   //   final _agefield =_ageController.text;
