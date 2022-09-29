@@ -172,7 +172,7 @@ class _EditingScreenState extends State<EditingScreen> {
       _class = widget.classlist;
     }
     final _student =
-        StudentModel(name: _name, age: _age, gender: _gender, standard: _class);
+        StudentModel(name: _name, age: _age, gender: _gender, standard: _class,image: "");
     getAllStudents()
     ;
     final studentDB = await Hive.openBox<StudentModel>('student_db');

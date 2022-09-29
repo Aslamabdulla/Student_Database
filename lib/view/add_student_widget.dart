@@ -166,8 +166,8 @@ class AddStudentWidget extends StatelessWidget {
       return;
     }
     print('$_name');
-    final _student =
-        StudentModel(name: _name, age: _age, gender: _gender, standard: _class);
+    final _student = StudentModel(
+        name: _name, age: _age, gender: _gender, standard: _class, image: "");
     addStudent(_student);
   }
   //   void checkLogin(BuildContext ctx) async {

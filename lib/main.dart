@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/controllers/student_controller.dart';
 import 'package:flutter_application_4/model/data_model.dart';
-import 'package:flutter_application_4/screens/screen_home.dart';
+import 'package:flutter_application_4/view/screen_home.dart';
+import 'package:get/get.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
+late Box<StudentModel> studentDb;
+late studentDbController controller = Get.put(studentDbController());
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(StudentModelAdapter().typeId)) {
     Hive.registerAdapter(StudentModelAdapter());
+    studentDb = await Hive.openBox<StudentModel>('student_db');
   }
   runApp(const MyApp());
 }
@@ -18,9 +24,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Student Database',
       theme: ThemeData(
         // This is the theme of your application.
         //
