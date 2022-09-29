@@ -23,7 +23,7 @@ class _ScreenMainState extends State<ScreenMain> {
 
   @override
   Widget build(BuildContext context) {
-    getAllStudents();
+    // getAllStudents();
     Box box;
     return Scaffold(
       appBar: AppBar(
@@ -96,13 +96,13 @@ class _ScreenMainState extends State<ScreenMain> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) {
-                          return ScreenViewAll();
-                        },
-                      ),
-                    );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (ctx) {
+                    //       return ScreenViewAll();
+                    //     },
+                    //   ),
+                    // );
                   },
                   child: Container(
                       decoration: boxDecorationContainerHomeTwoScreen(),

@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 late Box<StudentModel> studentDb;
-late studentDbController controller = Get.put(studentDbController());
+late StudentDbController controller = Get.put(StudentDbController());
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();

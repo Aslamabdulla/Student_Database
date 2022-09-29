@@ -171,12 +171,12 @@ class _EditingScreenState extends State<EditingScreen> {
     if (_class.isEmpty) {
       _class = widget.classlist;
     }
-    final _student =
-        StudentModel(name: _name, age: _age, gender: _gender, standard: _class,image: "");
-    getAllStudents()
+    final _student = StudentModel(
+        name: _name, age: _age, gender: _gender, standard: _class, image: "");
+    // getAllStudents()
     ;
     final studentDB = await Hive.openBox<StudentModel>('student_db');
     studentDB.put(listkey, _student);
-    getAllStudents();
+    // getAllStudents();
   }
 }

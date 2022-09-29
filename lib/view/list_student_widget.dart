@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/controllers/student_controller.dart';
+import 'package:flutter_application_4/core/colors/colors.dart';
 import 'package:flutter_application_4/functions/db_functions.dart';
-import 'package:flutter_application_4/model/data_model.dart';
+
 import 'package:flutter_application_4/view/editscreen.dart';
 import 'package:flutter_application_4/view/studentdetails.dart';
 import 'package:flutter_application_4/widgets/common_widgets.dart';
+import 'package:get/get.dart';
 
 List StudentImages = [
   'assets/images/studentimage/1 (1).jpeg',
@@ -40,13 +43,13 @@ List StudentImages = [
   'assets/images/studentimage/1 (32).jpeg',
   'assets/images/studentimage/1 (30).jpeg',
 ];
+final StudentDbController getxController = Get.put(StudentDbController());
 
 class ListenStudentWidget extends StatelessWidget {
   ListenStudentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    getAllStudents();
     return Scaffold(
       body: Container(
         child: Center(
@@ -70,32 +73,25 @@ class ListenStudentWidget extends StatelessWidget {
                   height: 680,
                   width: 380,
                   decoration: boxDecorationContainerTwo(),
-                  child: ValueListenableBuilder(
-                    valueListenable: studentListNotifier,
-                    builder: (BuildContext ctx, List<StudentModel> studentList,
-                        Widget? child) {
-                      return studentList.isEmpty == false
+                  child: GetBuilder<StudentDbController>(
+                    init: StudentDbController(),
+                    builder: (StudentDbController studentList) {
+                      return studentList.studentList.isNotEmpty
                           ? ListView.separated(
                               itemBuilder: (ctx, index) {
-                                final data = studentList[index];
+                                final data = studentList.studentList[index];
                                 return Card(
                                   elevation: 5,
                                   child: ListTile(
                                     onLongPress: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (ctx) {
-                                            return EditingScreen(
-                                              namelist: data.name,
-                                              agelist: data.age,
-                                              genderlist: data.gender,
-                                              classlist: data.standard,
-                                              listkey: data.key,
-                                              imagelist: StudentImages[index],
-                                            );
-                                          },
-                                        ),
-                                      );
+                                      Get.to(EditingScreen(
+                                        namelist: data.name,
+                                        agelist: data.age,
+                                        genderlist: data.gender,
+                                        classlist: data.standard,
+                                        listkey: data.key,
+                                        imagelist: StudentImages[index],
+                                      ));
                                     },
                                     leading: CircleAvatar(
                                       radius: 30,
@@ -105,34 +101,95 @@ class ListenStudentWidget extends StatelessWidget {
                                       backgroundColor: Colors.white,
                                     ),
                                     subtitle: Text("Age: ${data.age}"),
-                                    title: Text("Name: ${data.name}"),
-                                    trailing: IconButton(
-                                      onPressed: () {
-                                        if (data.key != null) {
-                                          deleteStudent(data.key!);
-                                          // print('deleted');
-                                        } else {
-                                          //   print('Student is null');
-                                        }
-                                      },
-                                      icon: Icon(Icons.delete),
-                                      color: Colors.red,
-                                    ),
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (ctx) {
-                                            return StudentDetails(
-                                              name: data.name,
-                                              age: data.age,
-                                              gender: data.gender,
-                                              standard: data.standard,
-                                              imagestudent:
-                                                  StudentImages[index],
+                                    title: Text(
+                                        "Name: ${studentList.studentList[index].name.toUpperCase()}"),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            Get.defaultDialog(
+                                              title: 'Confirm Delete',
+                                              titleStyle: TextStyle(
+                                                  fontSize: 25,
+                                                  color: kBlackColor),
+                                              middleText:
+                                                  'Please Confirm Deletion',
+                                              middleTextStyle: TextStyle(
+                                                  fontSize: 25,
+                                                  color: kBlackColor),
+                                              textConfirm: 'YES',
+                                              textCancel: 'NO',
+                                              cancelTextColor: kBlackColor,
+                                              confirmTextColor: kBlackColor,
+                                              onConfirm: () {
+                                                if (data.key != null) {
+                                                  studentList.deleteStudent(
+                                                      studentList
+                                                          .studentList[index]
+                                                          .id!,
+                                                      index);
+                                                  Get.back();
+                                                  // print('deleted');
+                                                } else {
+                                                  //   print('Student is null');
+                                                }
+                                              },
+                                              onCancel: () {
+                                                Get.back();
+                                              },
                                             );
                                           },
+                                          icon: Icon(Icons.edit),
+                                          color: Colors.black,
                                         ),
-                                      );
+                                        IconButton(
+                                          onPressed: () {
+                                            Get.defaultDialog(
+                                              title: 'Confirm Delete',
+                                              titleStyle: TextStyle(
+                                                  fontSize: 25,
+                                                  color: kBlackColor),
+                                              middleText:
+                                                  'Please Confirm Deletion',
+                                              middleTextStyle: TextStyle(
+                                                  fontSize: 25,
+                                                  color: kBlackColor),
+                                              textConfirm: 'YES',
+                                              textCancel: 'NO',
+                                              cancelTextColor: kBlackColor,
+                                              confirmTextColor: kBlackColor,
+                                              onConfirm: () {
+                                                if (data.key != null) {
+                                                  studentList.deleteStudent(
+                                                      studentList
+                                                          .studentList[index]
+                                                          .id!,
+                                                      index);
+                                                  Get.back();
+                                                  // print('deleted');
+                                                } else {
+                                                  //   print('Student is null');
+                                                }
+                                              },
+                                              onCancel: () {
+                                                Get.back();
+                                              },
+                                            );
+                                          },
+                                          icon: Icon(Icons.delete),
+                                          color: Colors.red,
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Get.to(StudentDetails(
+                                        name: data.name,
+                                        age: data.age,
+                                        gender: data.gender,
+                                        standard: data.standard,
+                                        imagestudent: StudentImages[index],
+                                      ));
                                     },
                                   ),
                                 );
@@ -142,10 +199,10 @@ class ListenStudentWidget extends StatelessWidget {
                                   height: 5,
                                 );
                               },
-                              itemCount: studentList.length,
+                              itemCount: studentList.studentList.length,
                             )
                           : Center(
-                              child: Text("Please Add Students"),
+                              child: Text("Please Add Some Students"),
                             );
                     },
                   ),

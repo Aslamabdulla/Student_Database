@@ -14,7 +14,7 @@ class ScreenHome extends StatefulWidget {
   State<ScreenHome> createState() => _ScreenHomeState();
 }
 
-final studentDbController getxController = Get.put(studentDbController());
+final StudentDbController getxController = Get.put(StudentDbController());
 
 class _ScreenHomeState extends State<ScreenHome> {
   int currentSelectedIndex = 0;
