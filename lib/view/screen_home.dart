@@ -4,6 +4,7 @@ import 'package:flutter_application_4/functions/db_functions.dart';
 import 'package:flutter_application_4/view/add_student_widget.dart';
 import 'package:flutter_application_4/view/list_student_widget.dart';
 import 'package:flutter_application_4/view/screen_main.dart';
+import 'package:flutter_application_4/view/search/search_bar.dart';
 import 'package:flutter_application_4/widgets/bottom_nav.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,7 @@ final StudentDbController getxController = Get.put(StudentDbController());
 class _ScreenHomeState extends State<ScreenHome> {
   int currentSelectedIndex = 0;
   final _pages = [
-    ScreenMain(),
+    SearchScreen(),
     AddStudentWidget(),
     ListenStudentWidget(),
   ];

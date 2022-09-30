@@ -27,12 +27,12 @@ const padding25 = EdgeInsets.symmetric(
   horizontal: 25,
 );
 final kGradient = LinearGradient(colors: [
-  Colors.white.withOpacity(.5),
-  Color.fromRGBO(39, 90, 107, .6),
+  Colors.white.withOpacity(.4),
+  Color.fromRGBO(39, 90, 107, .4),
   Color.fromRGBO(41, 139, 168, .5)
 ], stops: [
   0,
-  0.35,
+  0,
   1
 ], begin: Alignment.topCenter, end: Alignment.bottomCenter);
 final kAssetImageUrl = AssetImage("assets/images/usericon.jpg");

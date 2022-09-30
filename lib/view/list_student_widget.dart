@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_4/core/constants/constants.dart';
+import 'package:flutter_application_4/view/slimmy_card/slimmy_card.dart';
 import 'package:flutter_application_4/widgets/icon_button/icon_button.dart';
 import 'package:get/get.dart';
 
@@ -147,6 +150,18 @@ class ListenStudentWidget extends StatelessWidget {
                                                           .id!,
                                                       index);
                                                   Get.back();
+                                                  ElegantNotification.success(
+                                                          notificationPosition:
+                                                              NotificationPosition
+                                                                  .top,
+                                                          onDismiss: () {
+                                                            print("object");
+                                                          },
+                                                          title:
+                                                              Text("Success"),
+                                                          description: Text(
+                                                              "Student Data Deleted Successfully"))
+                                                      .show(context);
                                                   // print('deleted');
                                                 } else {
                                                   //   print('Student is null');
@@ -163,14 +178,25 @@ class ListenStudentWidget extends StatelessWidget {
                                       ],
                                     ),
                                     onTap: () {
-                                      Get.to(StudentDetails(
-                                        name: data.name,
-                                        age: data.age,
-                                        gender: data.gender,
-                                        standard: data.standard,
-                                        imagestudent: studentList
-                                            .studentList[index].image,
-                                      ));
+                                      Get.to(
+                                        SlimyCard(
+                                            name: data.name,
+                                            age: data.age,
+                                            gender: data.gender,
+                                            standard: data.standard,
+                                            imagestudent: studentList
+                                                .studentList[index].image),
+                                      );
+
+                                      // Get.to(StudentDetails(
+                                      //   name: data.name,
+                                      //   age: data.age,
+                                      //   gender: data.gender,
+                                      //   standard: data.standard,
+                                      //   imagestudent: studentList
+                                      //       .studentList[index].image,
+                                      // )
+                                      // );
                                     },
                                   ),
                                 );

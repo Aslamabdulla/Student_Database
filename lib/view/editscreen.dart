@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_4/controllers/student_controller.dart';
 import 'package:flutter_application_4/main.dart';
@@ -159,6 +161,16 @@ class EditingScreen extends StatelessWidget {
                                         context,
                                       );
                                       print(index);
+                                      ElegantNotification.success(
+                                              notificationPosition:
+                                                  NotificationPosition.top,
+                                              onDismiss: () {
+                                                print("object");
+                                              },
+                                              title: Text("Success"),
+                                              description: Text(
+                                                  "Student Data Edited Successfully"))
+                                          .show(context);
                                     },
                                     child: Text("EDIT")),
                               )
@@ -206,7 +218,7 @@ class EditingScreen extends StatelessWidget {
     ;
     // final studentDB = await Hive.openBox<StudentModel>('student_db');
     controller.updateStudent(_student, index);
-    Get.snackbar("SUCESS", "EDITED SUCCEFULLY");
+
     Get.offAll(ScreenHome());
 
     // studentDB.put(listkey, _student);

@@ -2,6 +2,8 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_4/core/constants/constants.dart';
 import 'package:flutter_application_4/view/bottom_sheet/image_bottomsheet.dart';
@@ -201,7 +203,7 @@ class AddStudentWidget extends StatelessWidget {
                                   style: buttonStyle(),
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
-                                      onAddStudentButtonClicked();
+                                      onAddStudentButtonClicked(context);
                                     }
                                   },
                                   icon: const Icon(Icons.add),
@@ -222,7 +224,7 @@ class AddStudentWidget extends StatelessWidget {
     );
   }
 
-  Future<void> onAddStudentButtonClicked() async {
+  Future<void> onAddStudentButtonClicked(BuildContext context) async {
     final String image;
     if (controller.studentImageFile == null) {
       image = 'assets/images/usericon.jpg';
@@ -247,16 +249,24 @@ class AddStudentWidget extends StatelessWidget {
     );
     controller.addStudent(_student);
     log(_student.name.toString());
-    Get.snackbar(
-        messageText: TextWidget(text: "STUDENT DETAILS SUCCESSFULLY ADDED"),
-        snackStyle: SnackStyle.FLOATING,
-        dismissDirection: DismissDirection.horizontal,
-        shouldIconPulse: true,
-        colorText: kWhiteColor,
-        backgroundColor: kBlackColor,
-        "",
-        "",
-        snackPosition: SnackPosition.TOP);
+    ElegantNotification.success(
+            notificationPosition: NotificationPosition.top,
+            onDismiss: () {
+              print("object");
+            },
+            title: Text("Success"),
+            description: Text("Student Data Successfully Added"))
+        .show(context);
+    // Get.snackbar(
+    //     messageText: TextWidget(text: "STUDENT DETAILS SUCCESSFULLY ADDED"),
+    //     snackStyle: SnackStyle.FLOATING,
+    //     dismissDirection: DismissDirection.horizontal,
+    //     shouldIconPulse: true,
+    //     colorText: kWhiteColor,
+    //     backgroundColor: kBlackColor,
+    //     "",
+    //     "",
+    //     snackPosition: SnackPosition.TOP);
     controller.studentImageFile = null;
     _nameController.clear();
     _ageController.clear();
